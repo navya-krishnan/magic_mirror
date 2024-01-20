@@ -1,0 +1,131 @@
+<%-include('header')-%>
+
+<style>
+    body{
+        background-image: none;
+        margin-top: 20px;
+        margin-left: 50px;
+        margin-right: 50px;
+    }
+    .pagination{
+      margin-left: 75em;  
+    }
+
+  
+</style>
+
+
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Mirror Magic - Admin Dashboard</a>
+      <form action="/addUser" method="get">
+        <button class="btn btn-outline-dark btn-lg px-5" type="Submit">Add New User</button>
+      </form>
+      <form action="/log-out" method="post">
+        <button class="btn btn-outline-dark btn-lg px-5" type="Submit">Log Out</button>
+      </form>
+    </div>
+  </nav>
+
+  <% if (updateMessage) { %>
+    <div class="alert alert-success mt-3" role="alert">
+        <%= updateMessage %>
+    </div>
+<% } %>
+
+<% if (deleteMessage) { %>
+  <div class="alert alert-success mt-3" role="alert">
+      <%= deleteMessage %>
+  </div>
+<% } %>
+
+<% if (addMessage) { %>
+  <div class="alert alert-danger mt-3" role="alert">
+      <%= addMessage %>
+  </div>
+<% } %>
+
+  <nav class="navbar bg-body-tertiary">
+    <div class="container-fluid">
+      <label> Show
+        <select name="DataTables_Table_0_length" >
+          <option value="10">10</option><option value="25">25</option><option value="50">50</option>
+          <option value="100">100</option></select> Entries
+        </label>
+
+      <form action="/admindashboard" method="post" class="mb-3">
+        <div class="input-group">
+            <input type="text" name="search" class="form-control" placeholder="Search by name or email...">
+            <button type="submit" class="btn btn-outline-primary">Search</button>
+        </div>
+    </form>
+    </div>
+  </nav>
+
+  <div>
+    <table class="table">
+      <thead>
+        <td >
+        <tr class="table" style="text-align: center;">
+          <th scope="col">ID</th>
+          <th scope="col">NAME</th>
+          <th scope="col">EMAIL</th>
+          <th scope="col">ACTION</th>
+        </tr>
+      </td>
+      </thead>
+      <tbody style="text-align: center;">
+        <% if (typeof users !== 'undefined' && users && users.length > 0) { %>
+            <% users.forEach((row, index) => { %>
+                <tr class='align-middle'>
+                    <td><%= index + 1 %></td>
+                    <td><%= row.name %></td>
+                    <td><%= row.email %></td>             
+                    <td >
+                        <a href="admin/edit/<%= row._id %>"  style= "padding: 5px ; background-color: #0f1518; color: #fff; text-decoration: none;  border-radius: 20px; " onclick="checker()">Edit<i class="fas fa-edit fa-lg mx-1"></i></a>
+                        <a href="admin/delete/<%= row._id %>" onclick="confirmDeletion('<%= row._id %>')" style="padding: 5px ; background-color: #14181b; color: #fff; text-decoration: none; border-radius: 20px;"  onclick="checker()">Delete<i class="fas fa-edit fa-lg mx-1"></i></a>
+                    </td>
+                </tr>
+            <% }) %>
+        <% } else { %>
+            <tr class="odd">
+                <td valign="top" colspan="4" class="dataTables_empty" style="text-align: center;">No data available in the table</td>
+            </tr>
+        <% } %>
+    </tbody>
+    </table>
+    <div class="row">
+      <div class="col-sm-12 col-md-5">
+          <div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite">
+              <% if (typeof users !== 'undefined' && users && users.length > 0) { %>
+                  Showing <%= (currentPage - 1) * itemsPerPage + 1 %> to <%= Math.min(currentPage * itemsPerPage, totalEntries) %> of <%= totalEntries %> entries
+              <% } else { %>
+                  No data available in the table
+              <% } %>
+          </div>
+      </div>
+  </div>
+</div>
+      
+
+<script>
+  function confirmDeletion(userId){
+    if (confirm("Are you sure you want to delete this user?")) {
+       // Send an AJAX request to the server to delete the user
+       $.ajax({
+           url: '/admin/delete/' + userId,
+           type: 'DELETE',
+           success: function(result) {
+               // Reload the page or show a success message
+               location.reload();
+           },
+           error: function(err) {
+               // Handle the error
+               alert("An error occurred while trying to delete the user.");
+           }
+       });
+   }
+  }
+</script>
+
+<%-include('footer')-%>

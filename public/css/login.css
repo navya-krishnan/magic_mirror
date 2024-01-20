@@ -1,0 +1,49 @@
+body {
+    font-family: sans-serif bold;
+    color: black;
+    background-image: url('https://images6.alphacoders.com/403/403376.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.container {
+    width: 100%;
+    max-width: 600px;
+    max-height: 630px;
+    margin: auto;
+}
+
+
+a {
+    display: block; 
+    text-align: center; 
+    margin-top: 10px; 
+}
+
+.title {
+    text-align: center;
+}
+
+form {
+    padding: 1em;
+}
+
+span {
+    display: block;
+    text-align: center;
+    font-weight: 1000;
+}
+
+p {
+    text-align: center;
+    margin-top: 10px; 
+    font-size: 25px;
+}
+h4{
+    padding-left: 100px;
+}
+
+#sign{
+    margin-left: 120px;
+}
+
